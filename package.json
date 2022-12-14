@@ -1,0 +1,27 @@
+{
+  "name": "jeu-de-hex",
+  "version": "1.0.0",
+  "description": "",
+  "main": "main.js",
+  "scripts": {
+    "start": "node main.js",
+    "dev": "nodemon main.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/LucasSigaut/Jeu-de-Hex.git"
+  },
+  "author": "Mathieu Colmon, Lucas Sigaut",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/LucasSigaut/Jeu-de-Hex/issues"
+  },
+  "homepage": "https://github.com/LucasSigaut/Jeu-de-Hex#readme",
+  "dependencies": {
+    "express": "^4.18.2",
+    "socket.io": "^4.5.4"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.20"
+  }
+}
