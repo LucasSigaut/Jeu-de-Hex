@@ -1,0 +1,12 @@
+/*
+  Par défaut, on place les pages
+  en dessous de l'écran
+*/
+body > * {
+  position: fixed;
+  top: 200%;
+}
+
+body.page-loading > #loadingPage {
+  top: 0;
+}

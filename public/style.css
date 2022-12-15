@@ -1,0 +1,24 @@
+@import 'https://fonts.googleapis.com/css?family=Questrial:regular';
+
+body {
+  background: #1a1a1a;
+  color: #eee;
+  font-family: Questrial, Helvetica, Arial, sans-serif;
+  font-size: 18px;
+  line-height: 1.5;
+  margin: 0;
+  padding: 0;
+  position: relative;
+  text-align: center;
+  width: 100%;
+}
+
+#loadingPage {
+  width: 100%;
+  height: 95%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  row-gap: 30px;
+}

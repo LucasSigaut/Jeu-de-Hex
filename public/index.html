@@ -1,95 +1,64 @@
 <!DOCTYPE html>
 <html lang='fr'>
 <head>
-<script src='/socket.io/socket.io.js'></script>
-<script src='https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js'></script>
+  <meta charset='utf-8'>
+  <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+  <meta name='description' content='Jeu de Hex'>
+  <meta name='author' content='Mathieu Colmon, Lucas Sigaut'>
+  <meta name='keywords' content='hex, jeu, mathieu, colmon, lucas, sigaut'>
+  <title>Jeu de Hex</title>
+  <link rel='stylesheet' href='pages.css'>
+  <link rel='stylesheet' href='style.css'>
+</head>
 
-<script>
-const socket = io();
-let numJoueur;
+<body class="page-loading">
+  <div id="loadingPage">
+    <img src="loader.svg" alt="Chargement...">
+    <div id="loadingText">Chargement...</div>
+  </div>
 
-function test() {
-  console.log('J\'appelle le serveur');
-  socket.emit('test', 'Ô serveur, je t\'envoie ce message');
-}
+  <div id="loginPage">
+    <form id="loginForm">
+      <input type='text' id='usernameInput' placeholder='Nom du joueur'>
+      <input type="submit" value="Continuer">
+    </form>
+  </div>
 
-socket.on('test', data => {
-  console.log('Réponse du serveur');
-  console.dir(data);
-});
+  <div id="gamePage">
+    <div class="header">
+      <div id="playerName"></div>
+      <div id="disconnectBtn"></div>
+    </div>
 
-function creerJoueur(){
-  const nom = $('#nomJoueur').val();
-  socket.emit('nvJoueur', nom);
-  socket.on('nvJoueur', indexJoueur => {
-    numJoueur = indexJoueur;
-  });
-}
+    <div>
+      <div id="gameBoard"></div>
+    </div>
 
-function quitterJoueur() {
-  const nom = $('#nomJoueur').val();
-  socket.emit('quitter', nom);
-}
+    <div class="bottom">
+      <div id="playerList"></div>
+      <div>
+        <div>Astuces</div>
+        <!-- ... -->
+      </div>
+    </div>
 
-socket.on('listJoueur', (data) => {
-  $('#listJoueurs').empty();
-  for (let i = 0; i < data.length; i += 1) {
-    $('#listJoueurs').append('<li>' + data[i] + '</li>');
-  }
-});
-window.addEventListener('load', () => { socket.emit('afficheJoueur'); } );
-</script>
+    <div id="chatDropdown">
+      <div id="dropdownBar">
+        <div>Chat</div>
+        <div id="chatNewMess" style="display: none">0</div>
+      </div>
+      <div id="chat">
+        <div id="chatMessages"></div>
+        <form onsubmit="sendMessage">
+          <input type="text" id="chatInput" placeholder="Message">
+          <input type="submit" value="Envoyer">
+        </form>
+      </div>
+    </div>
+  </div>
 
-<script src='https://d3js.org/d3.v5.min.js'></script>
-<script>
-  window.addEventListener('load', (event) => { genereDamier(15, 11, 11); });
-  function creeHexagone(rayon) {
-    const points = [];
-    for (let i = 0; i < 6; i += 1) {
-      const angle = i * Math.PI / 3;
-      const x = Math.sin(angle) * rayon;
-      const y = -Math.cos(angle) * rayon;
-      points.push([Math.round(x * 100) / 100, Math.round(y * 100) / 100]);
-    }
-
-    return points;
-  }
-
-  function genereDamier(rayon, nbLignes, nbColonnes) {
-    const distance = rayon - (Math.sin(1 * Math.PI / 3) * rayon);
-    d3.select('#tablier')
-      .append('svg')
-      .attr('width', nbLignes * 4 * rayon)
-      .attr('height', nbLignes * 2 * rayon);
-
-    let hexagone = creeHexagone(rayon);
-    for (let ligne = 0; ligne < nbLignes; ligne += 1) {
-      for (let colonne = 0; colonne < nbColonnes; colonne += 1) {
-        let d = '';
-        let x, y;
-        for (h in hexagone) {
-          x = hexagone[h][0] + (rayon - distance) * (2 + 2 * colonne + ligne);
-          y = distance * 2 + hexagone[h][1] + (rayon - distance * 2) * (1 + 2 * ligne);
-          if (h == 0) d += 'M' + x + ',' + y + ' L';
-          else d += x + ',' + y + ' ';
-        }
-        d += 'Z';
-        d3.select('svg')
-          .append('path')
-          .attr('d', d).attr('stroke', 'black').attr('fill', 'white')
-          .attr('id', 'h' + (ligne * 11 + colonne))
-          .on('click', (d) => { d3.select(this).attr('fill', 'red'); });
-      }
-    }
-  }
-</script>
-
-<body>
-  <h2>Oui</h2>
-  <ul id='listJoueurs'></ul>
-  <input type='text' id='nomJoueur' value='' placeholder='Nom du joueur'>
-  <input type='button' value='Nouveau joueur' onclick='creerJoueur()'>
-  <input type='button' value='Quitter la partie' onclick='quitterJoueur()'>
-  <div id='tablier'></div>
+  <script src='https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.1.2/socket.io.min.js'></script>
+  <script src='https://d3js.org/d3.v5.min.js'></script>
+  <script src="index.js"></script>
 </body>
 </html>
